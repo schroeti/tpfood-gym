@@ -1,3 +1,8 @@
+import hashlib
+import os
+import random as _random
+from six import integer_types
+import struct
 import sys
 import gym
 from gym import error, spaces, utils
@@ -6,6 +11,9 @@ from gym.utils import seeding
 from contextlib import closing
 from six import StringIO
 import numpy as np
+
+
+
 
 
 MAP = [
