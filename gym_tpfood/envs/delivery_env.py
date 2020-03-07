@@ -24,7 +24,7 @@ MAP = [
     "| | : | | : : |",
     "|Y| : |B| : |-|",
     "| | : | : : : |",
-    "| | : | : : : |",
+    "| | : | : : :Z|",
     "+-------------+",
 ]
 
@@ -83,9 +83,9 @@ class Delivery(discrete.DiscreteEnv):
     def __init__(self):
         self.desc = np.asarray(MAP, dtype='c')
 
-        self.locs = locs = [(0,0), (0,4), (4,0), (4,3)]
+        self.locs = locs = [(0,0), (0,4), (4,0), (4,3), (6,6)]
 
-        num_states = 980 #500
+        num_states = 1470 #500
         num_rows = 7 #5
         num_columns = 7 #5
         max_row = num_rows - 1
@@ -99,7 +99,7 @@ class Delivery(discrete.DiscreteEnv):
                 for pass_idx in range(len(locs) + 1):  # +1 for being inside taxi
                     for dest_idx in range(len(locs)):
                         state = self.encode(row, col, pass_idx, dest_idx)
-                        if pass_idx < 4 and pass_idx != dest_idx:
+                        if pass_idx < 5 and pass_idx != dest_idx:
                             initial_state_distrib[state] += 1
                         for action in range(num_actions):
                             # defaults
@@ -117,16 +117,16 @@ class Delivery(discrete.DiscreteEnv):
                             elif action == 3 and self.desc[1 + row, 2 * col] == b":":
                                 new_col = max(col - 1, 0)
                             elif action == 4:  # pickup
-                                if (pass_idx < 4 and taxi_loc == locs[pass_idx]):
-                                    new_pass_idx = 4
+                                if (pass_idx < 5 and taxi_loc == locs[pass_idx]):
+                                    new_pass_idx = 5
                                 else: # passenger not at location
                                     reward = -10
                             elif action == 5:  # dropoff
-                                if (taxi_loc == locs[dest_idx]) and pass_idx == 4:
+                                if (taxi_loc == locs[dest_idx]) and pass_idx == 5:
                                     new_pass_idx = dest_idx
                                     done = True
                                     reward = 20
-                                elif (taxi_loc in locs) and pass_idx == 4:
+                                elif (taxi_loc in locs) and pass_idx == 5:
                                     new_pass_idx = locs.index(taxi_loc)
                                 else: # dropoff at wrong location
                                     reward = -10
@@ -143,18 +143,18 @@ class Delivery(discrete.DiscreteEnv):
         i = taxi_row
         i *= 7 #5
         i += taxi_col
-        i *= 5 # 5
+        i *= 6 # 5
         i += pass_loc
-        i *= 4 #4
+        i *= 5 #4
         i += dest_idx
         return i
 
     def decode(self, i):
         out = []
-        out.append(i % 4) #4
-        i = i // 4  #4
-        out.append(i % 5) #5
-        i = i // 5 #5
+        out.append(i % 5) #4
+        i = i // 5  #4
+        out.append(i % 6) #5
+        i = i // 6 #5
         out.append(i % 7) #5
         i = i // 7 #5
         out.append(i)
@@ -169,7 +169,7 @@ class Delivery(discrete.DiscreteEnv):
         taxi_row, taxi_col, pass_idx, dest_idx = self.decode(self.s)
 
         def ul(x): return "_" if x == " " else x
-        if pass_idx < 4:
+        if pass_idx < 5:
             out[1 + taxi_row][2 * taxi_col + 1] = utils.colorize(
                 out[1 + taxi_row][2 * taxi_col + 1], 'yellow', highlight=True)
             pi, pj = self.locs[pass_idx]
