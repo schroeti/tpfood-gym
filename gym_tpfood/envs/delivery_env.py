@@ -84,9 +84,9 @@ class Delivery(discrete.DiscreteEnv):
 
         self.locs = locs = [(0,0), (0,4), (4,0), (4,3)]
 
-        num_states = 720 #720
-        num_rows = 6 #6
-        num_columns = 6 #6
+        num_states = 720 #500
+        num_rows = 6 #5
+        num_columns = 6 #5
         max_row = num_rows - 1
         max_col = num_columns - 1
         initial_state_distrib = np.zeros(num_states)
@@ -140,9 +140,9 @@ class Delivery(discrete.DiscreteEnv):
     def encode(self, taxi_row, taxi_col, pass_loc, dest_idx):
         # (5) 5, 5, 4
         i = taxi_row
-        i *= 5
+        i *= 6 #5
         i += taxi_col
-        i *= 5
+        i *= 6 # 5
         i += pass_loc
         i *= 4
         i += dest_idx
@@ -152,12 +152,12 @@ class Delivery(discrete.DiscreteEnv):
         out = []
         out.append(i % 4)
         i = i // 4
-        out.append(i % 5)
-        i = i // 5
-        out.append(i % 5)
-        i = i // 5
+        out.append(i % 6)#5
+        i = i // 6 #5
+        out.append(i % 6)#5
+        i = i // 6#5
         out.append(i)
-        assert 0 <= i < 5
+        assert 0 <= i < 6#5
         return reversed(out)
 
     def render(self, mode='human'):
