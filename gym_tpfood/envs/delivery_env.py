@@ -22,9 +22,9 @@ MAP = [
     "| : | : : : : |",
     "| : : : | : : |",
     "| | : | | : : |",
-    "|Y| : |B| : : |",
+    "|Y| : |B| : |-|",
     "| | : | : : : |",
-    "| | : | : : : |",
+    "| | : | : : :Z|",
     "+-------------+",
 ]
 
@@ -83,7 +83,7 @@ class Delivery(discrete.DiscreteEnv):
     def __init__(self):
         self.desc = np.asarray(MAP, dtype='c')
 
-        self.locs = locs = [(0,0), (0,4), (4,0), (4,3)]
+        self.locs = locs = [(0,0), (0,4), (4,0), (4,3), (7,7)]
 
         num_states = 980 #500
         num_rows = 7 #5
