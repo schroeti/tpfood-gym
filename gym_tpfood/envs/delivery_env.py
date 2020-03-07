@@ -47,12 +47,14 @@ class Delivery(discrete.DiscreteEnv):
     - 2: Y(ellow)
     - 3: B(lue)
     - 4: in taxi
+    - 5: Z
     
     Destinations:
     - 0: R(ed)
     - 1: G(reen)
     - 2: Y(ellow)
     - 3: B(lue)
+    - 4: Z
         
     Actions:
     There are 6 discrete deterministic actions:
@@ -72,7 +74,7 @@ class Delivery(discrete.DiscreteEnv):
     - magenta: destination
     - yellow: empty taxi
     - green: full taxi
-    - other letters (R, G, Y and B): locations for passengers and destinations
+    - other letters (R, G, Y, B and Z): locations for passengers and destinations
     
 
     state space is represented by:
@@ -83,7 +85,7 @@ class Delivery(discrete.DiscreteEnv):
     def __init__(self):
         self.desc = np.asarray(MAP, dtype='c')
 
-        self.locs = locs = [(0,0), (0,4), (4,0), (4,3), (6,6)]
+        self.locs = locs = [(0,0), (0,4), (4,0), (4,3), (6,6)] #Z is (6,6)
 
         num_states = 1470 #500
         num_rows = 7 #5
@@ -141,24 +143,24 @@ class Delivery(discrete.DiscreteEnv):
     def encode(self, taxi_row, taxi_col, pass_loc, dest_idx):
         # (5) 5, 5, 4
         i = taxi_row
-        i *= 7 #5
+        i *= 7 #5 number of rows/cols
         i += taxi_col
-        i *= 6 # 5
+        i *= 6 # 5 number of passenger locations
         i += pass_loc
-        i *= 5 #4
+        i *= 5 #4 number of passenger destinations
         i += dest_idx
         return i
 
     def decode(self, i):
         out = []
-        out.append(i % 5) #4
+        out.append(i % 5) #4 number of passenger destinations
         i = i // 5  #4
-        out.append(i % 6) #5
+        out.append(i % 6) #5 number of passenger locations
         i = i // 6 #5
-        out.append(i % 7) #5
+        out.append(i % 7) #5 number of rows/cols
         i = i // 7 #5
         out.append(i)
-        assert 0 <= i < 7 #5
+        assert 0 <= i < 7 #5 number of rows/cols
         return reversed(out)
 
     def render(self, mode='human'):
@@ -169,7 +171,7 @@ class Delivery(discrete.DiscreteEnv):
         taxi_row, taxi_col, pass_idx, dest_idx = self.decode(self.s)
 
         def ul(x): return "_" if x == " " else x
-        if pass_idx < 5:
+        if pass_idx < 5: #number of passenger destinations
             out[1 + taxi_row][2 * taxi_col + 1] = utils.colorize(
                 out[1 + taxi_row][2 * taxi_col + 1], 'yellow', highlight=True)
             pi, pj = self.locs[pass_idx]
