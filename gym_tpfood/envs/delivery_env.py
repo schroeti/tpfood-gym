@@ -150,14 +150,14 @@ class Delivery(discrete.DiscreteEnv):
 
     def decode(self, i):
         out = []
-        out.append(i % 4)
-        i = i // 4
-        out.append(i % 6)#5
+        out.append(i % 5) #4
+        i = i // 5  #4
+        out.append(i % 6) #5
         i = i // 6 #5
-        out.append(i % 6)#5
-        i = i // 6#5
+        out.append(i % 6) #5
+        i = i // 6 #5
         out.append(i)
-        assert 0 <= i < 6#5
+        assert 0 <= i < 6 #5
         return reversed(out)
 
     def render(self, mode='human'):
