@@ -142,7 +142,7 @@ class Delivery(discrete.DiscreteEnv):
         i = taxi_row
         i *= 6 #5
         i += taxi_col
-        i *= 6 # 5
+        i *= 5 # 5
         i += pass_loc
         i *= 4
         i += dest_idx
@@ -150,10 +150,10 @@ class Delivery(discrete.DiscreteEnv):
 
     def decode(self, i):
         out = []
-        out.append(i % 5) #4
-        i = i // 5  #4
-        out.append(i % 6) #5
-        i = i // 6 #5
+        out.append(i % 4) #4
+        i = i // 4  #4
+        out.append(i % 5) #5
+        i = i // 5 #5
         out.append(i % 6) #5
         i = i // 6 #5
         out.append(i)
