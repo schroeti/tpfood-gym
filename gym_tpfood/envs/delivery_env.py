@@ -110,7 +110,7 @@ class Delivery(discrete.DiscreteEnv):
                             done = False
                             taxi_loc = (row, col)
 
-                            if action == 0 and self.desc[2*row+2, 1 + col] != b"x":
+                            if action == 0 and self.desc[2*row+1, 1 + col] != b"x":
                                 new_row = min(row + 1, max_row)
                             elif action == 1 and self.desc[2*row, 1 + col] != b"x":
                                 new_row = max(row - 1, 0)
