@@ -91,10 +91,10 @@ class Delivery(discrete.DiscreteEnv):
     def __init__(self):
         self.desc = np.asarray(MAP, dtype='c')
 
-        self.locs = locs = [(0,0), (0,4), (4,0), (4,3), (6,6)] #Z is (6,6)
+        self.locs = locs = [(0,0), (0,4), (8,0), (8,3), (12,6)] #Z is (6,6)
 
-        num_states = 1470 #500, number of rows x number of cols x number of destinations x number of locations
-        num_rows = 7 #5
+        num_states = 2940 #500, number of rows x number of cols x number of destinations x number of locations
+        num_rows = 14 #5
         num_columns = 7 #5
         max_row = num_rows - 1
         max_col = num_columns - 1
@@ -116,9 +116,9 @@ class Delivery(discrete.DiscreteEnv):
                             done = False
                             taxi_loc = (row, col)
 
-                            if action == 0 and self.desc[2 * row + 2, 1 + col] == b".":
+                            if action == 0 and self.desc[row + 1, 1 + col] == b".":
                                 new_row = min(row + 1, max_row)
-                            elif action == 1 and self.desc[2 * row, 1 + col] == b".":
+                            elif action == 1 and self.desc[row-1, 1 + col] == b".":
                                 new_row = max(row - 1, 0)
                             if action == 2 and self.desc[1 + row, 2 * col + 2] == b":":
                                 new_col = min(col + 1, max_col)
@@ -149,7 +149,7 @@ class Delivery(discrete.DiscreteEnv):
     def encode(self, taxi_row, taxi_col, pass_loc, dest_idx):
         # (5) 5, 5, 4
         i = taxi_row
-        i *= 7 #5 number of rows/cols
+        i *= 14 #5 number of rows/cols
         i += taxi_col
         i *= 6 # 5 number of passenger locations
         i += pass_loc
@@ -163,10 +163,10 @@ class Delivery(discrete.DiscreteEnv):
         i = i // 5  #4
         out.append(i % 6) #5 number of passenger locations
         i = i // 6 #5
-        out.append(i % 7) #5 number of rows/cols
-        i = i // 7 #5
+        out.append(i % 14) #5 number of rows/cols
+        i = i // 14 #5
         out.append(i)
-        assert 0 <= i < 7 #5 number of rows/cols
+        assert 0 <= i < 14 #5 number of rows/cols
         return reversed(out)
 
     def render(self, mode='human'):
