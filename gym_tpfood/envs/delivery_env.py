@@ -20,17 +20,17 @@ MAP = [
     "+---------------------------+",
     "|R: | : :G: : : : : : : : : |",
     "|....-......................|",
-    "| : | : : : : : : : : : : : |",
+    "| : |Z: : : : : : : : : : : |",
     "|...........................|",
-    "| : : : | : : : : : : : : : |",
+    "|Y: : :B| : : : : : : : : : |",
     "|........-.-................|",
     "| | : | | : : : : : : : : : |",
     "|....-......................|",
-    "|Y| : |B| | | : : : : : : : |",
+    "| | : | | | | : : : : : : : |",
     "|....-......................|",
     "| | : | : : : : : : : : : : |",
     "|....-......................|",
-    "| | : | : : :Z: : : : : : : |",
+    "| | : | : : : : : : : : : : |",
     "| : : : : : : : : : : : : : |",
     "+---------------------------+",
 ]
@@ -92,7 +92,7 @@ class Delivery(discrete.DiscreteEnv):
     def __init__(self):
         self.desc = np.asarray(MAP, dtype='c')
 
-        self.locs = locs = [(0,0), (0,4), (8,0), (8,3), (12,6)] #Z is (6,6)
+        self.locs = locs = [(0,0), (0,4), (4,0), (4,3), (2,2)] #Z is (6,6)
 
         num_states = 5880 #500, number of rows x number of cols x number of destinations x number of locations
         num_rows = 14 #5
@@ -117,9 +117,9 @@ class Delivery(discrete.DiscreteEnv):
                             done = False
                             taxi_loc = (row, col)
 
-                            if action == 0 and self.desc[row + 1, 1 + col] == b".":
+                            if action == 0 and self.desc[row + 2, 1 + col] == b".":
                                 new_row = min(row + 1, max_row)
-                            elif action == 1 and self.desc[row-1, 1 + col] == b".":
+                            elif action == 1 and self.desc[row-2, 1 + col] == b".":
                                 new_row = max(row - 1, 0)
                             if action == 2 and self.desc[1 + row, 2 * col + 2] == b":":
                                 new_col = min(col + 1, max_col)
