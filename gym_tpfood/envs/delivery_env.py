@@ -93,7 +93,7 @@ class Delivery(discrete.DiscreteEnv):
 
         self.locs = locs = [(0,0), (0,4), (8,0), (8,3), (12,6)] #Z is (6,6)
 
-        num_states = 2940 #500, number of rows x number of cols x number of destinations x number of locations
+        num_states = 1470 #500, number of rows x number of cols x number of destinations x number of locations
         num_rows = 14 #5
         num_columns = 7 #5
         max_row = num_rows - 1
