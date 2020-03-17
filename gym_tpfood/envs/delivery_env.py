@@ -18,13 +18,13 @@ import numpy as np
 
 MAP = [
     "+-------------+",
-    "|R: | : :G: : |",
-    "| : | : : : : |",
-    "| : : : | :-: |",
-    "| | : | | : : |",
-    "|Y| : |B| | | |",
-    "| | : | : : : |",
-    "| | : | : : :Z|",
+    "|R: :-: :G: : |",
+    "| : : : : : : |",
+    "| :-:-: : : : |",
+    "| : : : : : : |",
+    "|Y: :-:B| : : |",
+    "| : : : : : : |",
+    "| : : : : : :Z|",
     "+-------------+",
 ]
 
@@ -86,6 +86,8 @@ class Delivery(discrete.DiscreteEnv):
         self.desc = np.asarray(MAP, dtype='c')
 
         self.locs = locs = [(0,0), (0,4), (4,0), (4,3), (6,6)] #Z is (6,6)
+        #Create horizontal walls
+        self.anomaly_locs = [(0,2), (2,1), (2,2), (4,2)]
 
         num_states = 1470 #500
         num_rows = 7 #5
@@ -132,6 +134,12 @@ class Delivery(discrete.DiscreteEnv):
                                     new_pass_idx = locs.index(taxi_loc)
                                 else: # dropoff at wrong location
                                     reward = -10
+                            #Penalty if wall is hit        
+                            new_loc = (new_row, new_col)
+                            if new_loc in self.anomaly_locs:
+                              reward = -1000
+                              done = True
+                                
                             new_state = self.encode(
                                 new_row, new_col, new_pass_idx, dest_idx)
                             P[state][action].append(
@@ -182,6 +190,13 @@ class Delivery(discrete.DiscreteEnv):
 
         di, dj = self.locs[dest_idx]
         out[1 + di][2 * dj + 1] = utils.colorize(out[1 + di][2 * dj + 1], 'magenta')
+        
+        #Addition if apocalypse mode
+        for (zx, zy) in self.anomaly_locs:
+         out[1 + zx][2 * zy + 1] = utils.colorize(
+         out[1 + zx][2 * zy + 1], 'red', bold=True)
+        
+        
         outfile.write("\n".join(["".join(row) for row in out]) + "\n")
         if self.lastaction is not None:
             outfile.write("  ({})\n".format(["South", "North", "East", "West", "Pickup", "Dropoff"][self.lastaction]))
