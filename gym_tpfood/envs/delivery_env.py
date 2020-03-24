@@ -19,11 +19,17 @@ import numpy as np
 MAP = [
     "+-------------+",
     "|R: :-: :G: : |",
+    "|:::::::::::::|",
     "| : : : : : : |",
+    "|:::::::::::::|",
     "| :-:-: : : : |",
+    "|:::::::::::::|",
     "| : : : : : : |",
+    "|:::::::::::::|",
     "|Y: :-:B| : : |",
+    "|:::::::::::::|",
     "| : : : : : : |",
+    "|:::::::::::::|",
     "| : : : : : :Z|",
     "+-------------+",
 ]
@@ -86,9 +92,7 @@ class Delivery(discrete.DiscreteEnv):
         self.desc = np.asarray(MAP, dtype='c')
 
         self.locs = locs = [(0,0), (0,4), (4,0), (4,3), (6,6)] #Z is (6,6)
-        #Create horizontal walls
-        self.anomaly_locs = [(0,2), (2,1), (2,2), (4,2)]
-
+        
         num_states = 1470 #500
         num_rows = 7 #5
         num_columns = 7 #5
@@ -112,13 +116,13 @@ class Delivery(discrete.DiscreteEnv):
                             done = False
                             taxi_loc = (row, col)
 
-                            if action == 0 :
+                            if action == 0 and self.desc[2*row+2, 2 * col + 1] == b":" :
                                 new_row = min(row + 1, max_row)
-                            elif action == 1 : 
+                            elif action == 1 and self.desc[2*row, 2 * col + 1] == b":" : 
                                 new_row = max(row - 1, 0)
-                            if action == 2 and self.desc[1 + row, 2 * col + 2] == b":" and self.desc[1 + row, 2 * col + 3] == b" ":
+                            if action == 2 and self.desc[1 + row, 2 * col + 2] == b":" :
                                 new_col = min(col + 1, max_col)
-                            elif action == 3 and self.desc[1 + row, 2 * col] == b":" and self.desc[1 + row, 2 * col-1] == b" ":
+                            elif action == 3 and self.desc[1 + row, 2 * col] == b":" :
                                 new_col = max(col - 1, 0)
                             elif action == 4:  # pickup
                                 if (pass_idx < 5 and taxi_loc == locs[pass_idx]):
@@ -133,12 +137,7 @@ class Delivery(discrete.DiscreteEnv):
                                 elif (taxi_loc in locs) and pass_idx == 5:
                                     new_pass_idx = locs.index(taxi_loc)
                                 else: # dropoff at wrong location
-                                    reward = -10
-                            #Penalty if wall is hit        
-                            new_loc = (new_row, new_col)
-                            if new_loc in self.anomaly_locs:
-                              reward = -1000
-                              done = True
+                                    reward = -1
                                 
                             new_state = self.encode(
                                 new_row, new_col, new_pass_idx, dest_idx)
@@ -180,21 +179,18 @@ class Delivery(discrete.DiscreteEnv):
 
         def ul(x): return "_" if x == " " else x
         if pass_idx < 5: #number of passenger destinations
-            out[1 + taxi_row][2 * taxi_col + 1] = utils.colorize(
-                out[1 + taxi_row][2 * taxi_col + 1], 'yellow', highlight=True)
+            out[2 * taxi_row + 1][2 * taxi_col + 1] = utils.colorize(
+                out[2 * taxi_row + 1][2 * taxi_col + 1], 'yellow', highlight=True)
             pi, pj = self.locs[pass_idx]
-            out[1 + pi][2 * pj + 1] = utils.colorize(out[1 + pi][2 * pj + 1], 'blue', bold=True)
+            out[2 * pi + 1][2 * pj + 1] = utils.colorize(out[2 * pi + 1][2 * pj + 1], 'blue', bold=True)
         else:  # passenger in taxi
-            out[1 + taxi_row][2 * taxi_col + 1] = utils.colorize(
-                ul(out[1 + taxi_row][2 * taxi_col + 1]), 'green', highlight=True)
+            out[2 * taxi_row + 1][2 * taxi_col + 1] = utils.colorize(
+                ul(out[2  * taxi_row + 1][2 * taxi_col + 1]), 'green', highlight=True)
 
         di, dj = self.locs[dest_idx]
-        out[1 + di][2 * dj + 1] = utils.colorize(out[1 + di][2 * dj + 1], 'magenta')
+        out[2 * di + 1][2 * dj + 1] = utils.colorize(out[2 * di + 1][2 * dj + 1], 'magenta')
         
-        #Addition if apocalypse mode
-        for (zx, zy) in self.anomaly_locs:
-         out[1 + zx][2 * zy + 1] = utils.colorize(
-         out[1 + zx][2 * zy + 1], 'red', bold=True)
+
         
         
         outfile.write("\n".join(["".join(row) for row in out]) + "\n")
