@@ -120,9 +120,9 @@ class Delivery(discrete.DiscreteEnv):
                                 new_row = min(row + 1, max_row)
                             elif action == 1 and self.desc[2*row, 2 * col + 1] == b":" : 
                                 new_row = max(row - 1, 0)
-                            if action == 2 and self.desc[1 + row, 2 * col + 2] == b":" :
+                            if action == 2 and self.desc[2 * row + 1, 2 * col + 2] == b":" :
                                 new_col = min(col + 1, max_col)
-                            elif action == 3 and self.desc[1 + row, 2 * col] == b":" :
+                            elif action == 3 and self.desc[2 * row + 1, 2 * col] == b":" :
                                 new_col = max(col - 1, 0)
                             elif action == 4:  # pickup
                                 if (pass_idx < 5 and taxi_loc == locs[pass_idx]):
