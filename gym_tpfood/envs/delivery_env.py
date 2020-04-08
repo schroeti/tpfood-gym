@@ -11,7 +11,8 @@ from gym.utils import seeding
 from contextlib import closing
 from six import StringIO
 import numpy as np
-
+import scipy.stats as sps
+import pandas as pd
 
 
 
@@ -89,13 +90,28 @@ class Delivery(discrete.DiscreteEnv):
     metadata = {'render.modes': ['human', 'ansi']}
 
     def __init__(self):
-        self.desc = np.asarray(MAP, dtype='c')
-
-        self.locs = locs = [(0,0), (0,4), (4,0), (4,3), (6,6)] #Z is (6,6)
+         self.desc = np.asarray(MAP, dtype='c')
         
         num_states = 1470 #500
         num_rows = 7 #5
         num_columns = 7 #5
+        num_locs = 5
+        
+
+    #Create locations
+        for locations_pass in range(num_locs):
+            #Generate passenger LOCATION on grid
+            row_origin = sps.randint.rvs(1, num_rows, size = num_locs)
+            col_origin = sps.randint.rvs(1, num_columns, size= num_locs)
+            grid_origin = (row_origin -1) * num_rows + (col_origin-1)   
+            
+            locs = list(zip(row_origin,col_origin))
+            locs = list(dict.fromkeys(locs))
+            
+            locs_pos = list(grid_origin)
+            locs_pos = list(dict.fromkeys(locs_pos))
+        
+        self.locs = locs 
         max_row = num_rows - 1
         max_col = num_columns - 1
         initial_state_distrib = np.zeros(num_states)
