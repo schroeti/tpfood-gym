@@ -90,28 +90,16 @@ class Delivery(discrete.DiscreteEnv):
     metadata = {'render.modes': ['human', 'ansi']}
 
     def __init__(self):
-         self.desc = np.asarray(MAP, dtype='c')
+        self.desc = np.asarray(MAP, dtype='c')
         
-        num_states = 1470 #500
         num_rows = 7 #5
         num_columns = 7 #5
-        num_locs = 5
         
 
     #Create locations
-        for locations_pass in range(num_locs):
-            #Generate passenger LOCATION on grid
-            row_origin = sps.randint.rvs(1, num_rows, size = num_locs)
-            col_origin = sps.randint.rvs(1, num_columns, size= num_locs)
-            grid_origin = (row_origin -1) * num_rows + (col_origin-1)   
-            
-            locs = list(zip(row_origin,col_origin))
-            locs = list(dict.fromkeys(locs))
-            
-            locs_pos = list(grid_origin)
-            locs_pos = list(dict.fromkeys(locs_pos))
         
-        self.locs = locs 
+        self.locs = locs = [(x,y) for x in range(num_columns) for y in range(num_rows)] #list comprehension to create all possible locationss
+        num_states = num_rows * num_columns * (len(locs) + 1) * len(locs) #500
         max_row = num_rows - 1
         max_col = num_columns - 1
         initial_state_distrib = np.zeros(num_states)
@@ -123,7 +111,7 @@ class Delivery(discrete.DiscreteEnv):
                 for pass_idx in range(len(locs) + 1):  # +1 for being inside taxi
                     for dest_idx in range(len(locs)):
                         state = self.encode(row, col, pass_idx, dest_idx)
-                        if pass_idx < 5 and pass_idx != dest_idx:
+                        if pass_idx < len(locs) and pass_idx != dest_idx:
                             initial_state_distrib[state] += 1
                         for action in range(num_actions):
                             # defaults
@@ -132,25 +120,25 @@ class Delivery(discrete.DiscreteEnv):
                             done = False
                             taxi_loc = (row, col)
 
-                            if action == 0 and self.desc[2*row+2, 2 * col + 1] == b":" :
+                            if action == 0 and self.desc[2 * row + 2, 2 * col + 1] == b":" :
                                 new_row = min(row + 1, max_row)
-                            elif action == 1 and self.desc[2*row, 2 * col + 1] == b":" : 
+                            elif action == 1 and self.desc[2 * row, 2 * col + 1] == b":" : 
                                 new_row = max(row - 1, 0)
                             if action == 2 and self.desc[2 * row + 1, 2 * col + 2] == b":" :
                                 new_col = min(col + 1, max_col)
                             elif action == 3 and self.desc[2 * row + 1, 2 * col] == b":" :
                                 new_col = max(col - 1, 0)
                             elif action == 4:  # pickup
-                                if (pass_idx < 5 and taxi_loc == locs[pass_idx]):
-                                    new_pass_idx = 5
+                                if (pass_idx < len(locs) and taxi_loc == locs[pass_idx]):
+                                    new_pass_idx = len(locs)
                                 else: # passenger not at location
                                     reward = -10
                             elif action == 5:  # dropoff
-                                if (taxi_loc == locs[dest_idx]) and pass_idx == 5:
+                                if (taxi_loc == locs[dest_idx]) and pass_idx ==len(locs):
                                     new_pass_idx = dest_idx
                                     done = True
                                     reward = 20
-                                elif (taxi_loc in locs) and pass_idx == 5:
+                                elif (taxi_loc in locs) and pass_idx == len(locs):
                                     new_pass_idx = locs.index(taxi_loc)
                                 else: # dropoff at wrong location
                                     reward = -1
@@ -162,24 +150,26 @@ class Delivery(discrete.DiscreteEnv):
         initial_state_distrib /= initial_state_distrib.sum()
         discrete.DiscreteEnv.__init__(
             self, num_states, num_actions, P, initial_state_distrib)
+        
+        
 
     def encode(self, taxi_row, taxi_col, pass_loc, dest_idx):
         # (5) 5, 5, 4
         i = taxi_row
         i *= 7 #5 number of rows/cols
         i += taxi_col
-        i *= 6 # 5 number of passenger locations
+        i *= 50 # 5 number of passenger locations
         i += pass_loc
-        i *= 5 #4 number of passenger destinations
+        i *= 49 #4 number of passenger destinations
         i += dest_idx
         return i
 
     def decode(self, i):
         out = []
-        out.append(i % 5) #4 number of passenger destinations
-        i = i // 5  #4
-        out.append(i % 6) #5 number of passenger locations
-        i = i // 6 #5
+        out.append(i % 49) #4 number of passenger destinations
+        i = i // 49  #4
+        out.append(i % 50) #5 number of passenger locations
+        i = i // 50 #5
         out.append(i % 7) #5 number of rows/cols
         i = i // 7 #5
         out.append(i)
