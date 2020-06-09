@@ -137,7 +137,7 @@ class Delivery(discrete.DiscreteEnv):
                                 if (taxi_loc == locs[dest_idx]) and pass_idx ==len(locs):
                                     new_pass_idx = dest_idx
                                     done = True
-                                    reward = 20
+                                    reward = 2000
                                 elif (taxi_loc in locs) and pass_idx == len(locs):
                                     new_pass_idx = locs.index(taxi_loc)
                                 else: # dropoff at wrong location
