@@ -4,5 +4,4 @@ This is a repository for a RL package about food transportation.
 **1. Modification of environment** 
 - Extension of grid to 7 rows and 7 cols
 
-
-**2. Extension to 2 passengers
+**2. Extension to 2 passengers**
