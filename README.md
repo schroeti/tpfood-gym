@@ -1,7 +1,7 @@
 # Delivery problem
 
 ## Getting started
-Delivery-v0 is a fork environement of the [https://github.com/openai/gym/blob/master/gym/envs/toy_text/taxi.py](OpenAI taxi-v3) environment. It includes the following extensions:
+Delivery-v0 is a fork environement of the [OpenAI taxi-v3](https://github.com/openai/gym/blob/master/gym/envs/toy_text/taxi.py) environment. It includes the following extensions:
 
 - increase of the grid size, you now have a 5x5 grid
 - 5 origins/destinations
