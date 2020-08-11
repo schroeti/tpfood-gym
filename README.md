@@ -61,4 +61,14 @@ import gym_tpfood
 ```
 If Python does not throw an error, this means that the library has been correctly installed. 
 
+### On Google Colab or Jupyter Notebook
+PIP is installed by default. 
+Simply run:
+```
+!pip install gym
+!git clone https://github.com/schroeti/tpfood-gym.git
+%ls
+%cd tpfood-gym
+!python setup.py develop
+```
 
