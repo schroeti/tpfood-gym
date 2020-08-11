@@ -54,6 +54,11 @@ cd
 ```
 python setup.py develop
 ```
-
+7. You can check that the gym_tpfood library was correctly installed by typing
+```
+python
+import gym_tpfood
+```
+If Python does not throw an error, this means that the library has been correctly installed. 
 
 
