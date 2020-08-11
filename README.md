@@ -11,6 +11,7 @@ Delivery-v0 is a fork environement of the OpenAI taxi-v3 environment. It include
 ## Instructions for installation
 The repository is built as follows:
 
+```
 tpfood_gym/
   README.md
   setup.py
@@ -19,6 +20,7 @@ tpfood_gym/
     envs/
       __init__.py
       delivery_env.py
+```
 
 
 
