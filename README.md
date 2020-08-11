@@ -22,10 +22,10 @@ tpfood_gym/
       delivery_env.py
 ```
 
-## Instructions for installation
+## Instructions for installation of environment
 If you want to use the ```delivery_env.py```environment, here is how you should proceed. 
 
-### Local computer (on Mac)
+### Local computer on Mac OS X
 Open the terminal by doing 
 1. Check if pip is installed
 ```
@@ -71,4 +71,11 @@ Simply run:
 %cd tpfood-gym
 !python setup.py develop
 ```
+## Instruction for installation of agents on Mac OS X
+The main library used for agents is [Stable Baselines](https://stable-baselines.readthedocs.io/en/master/guide/install.html).
 
+Installation of system packages on Mac requires Homebrew. With Homebrew installed, run the following:
+```
+brew install cmake openmpi
+pip install stable-baselines[mpi]
+```
