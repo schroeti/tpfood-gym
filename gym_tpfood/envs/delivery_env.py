@@ -74,15 +74,15 @@ class DiscreteEnv(Env):
 
 MAP = [
     "+---------+",
-    "|R: : : : |",
-    "|: : : : :|",
+    "|A| : : | |",
+    "|:|: --- :|",
     "| : : : : |",
+    "|: : --- :|",
+    "| : :E: : |",
     "|: : : : :|",
-    "| : :B: : |",
-    "|: : : : :|",
-    "| : : : : |",
-    "|: : : : :|",
-    "| |Y| | |G|",
+    "| | : :C: |",
+    "|:|: : :|:|",
+    "| |B: : |D|",
     "+---------+",
 ]
 
@@ -149,8 +149,8 @@ class Delivery(DiscreteEnv):
 
     #Create locations
         
-        self.locs = locs = [(0,0), (4,1), (3,3)] 
-        #self.locs = locs = [(0,0), (4,1),(3,3),(4,4), (2,2)] 
+        #self.locs = locs = [(0,0), (4,1), (3,3)] 
+        self.locs = locs = [(0,0), (4,1),(3,3),(4,4), (2,2)] 
         num_states = num_rows * num_columns * (len(locs) + 1) * len(locs) * (len(locs) + 1) * len(locs) #grid size * pass_idx_1 * dest_idx_1 * pass_idx_2 * dest_idx_2
         max_row = num_rows - 1
         max_col = num_columns - 1
@@ -255,26 +255,26 @@ class Delivery(DiscreteEnv):
         i = taxi_row
         i *= 5 #5 number of rows/cols
         i += taxi_col
-        i *= 4 # 5 number of passenger 1 locations
+        i *= 6 # 5 number of passenger 1 locations
         i += pass_loc_1
-        i *= 4 # 5 number of passenger 2 locations
+        i *= 6 # 5 number of passenger 2 locations
         i += pass_loc_2
-        i *= 3 #4 number of passenger 1 destinations
+        i *= 5 #4 number of passenger 1 destinations
         i += dest_idx_1
-        i *= 3 #4 number of passenger 2 destinations
+        i *= 5 #4 number of passenger 2 destinations
         i += dest_idx_2
         return i
     
     def decode(self, i):
         out = []
-        out.append(i % 3) #4 number of passenger 1 destinations
-        i = i // 3  #4
-        out.append(i % 3) #4 number of passenger 2 destinations
-        i = i // 3  #4
-        out.append(i % 4) #5 number of passenger 1 locations
-        i = i // 4 #5
-        out.append(i % 4) #5 number of passenger 2 locations
-        i = i // 4 #5
+        out.append(i % 5) #4 number of passenger 1 destinations
+        i = i // 5  #4
+        out.append(i % 5) #4 number of passenger 2 destinations
+        i = i // 5  #4
+        out.append(i % 6) #5 number of passenger 1 locations
+        i = i // 6 #5
+        out.append(i % 6) #5 number of passenger 2 locations
+        i = i // 6 #5
         out.append(i % 5) #5 number of rows/cols
         i = i // 5 #5
         out.append(i)
