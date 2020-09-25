@@ -289,145 +289,40 @@ class Delivery(DiscreteEnv):
         taxi_row, taxi_col, pass_idx_1, pass_idx_2, dest_idx_1, dest_idx_2 = self.decode(self.s)
     
         def ul(x): return "_" if x == " " else x       
+        
+        pi_1, pj_1 = self.locs[pass_idx_1-1]
+        out[2 * pi_1 + 1][2 * pj_1 + 1] = utils.colorize(out[2 * pi_1 + 1][2 * pj_1 + 1], 'cyan', bold=True)
+        
+        pi_2, pj_2  = self.locs[pass_idx_2-1]
+        out[2 * pi_2 + 1][2 * pj_2 + 1] = utils.colorize(out[2 * pi_2 + 1][2 * pj_2 + 1], 'magenta', bold=True)
+        
+        
+        di_1, dj_1 = self.locs[dest_idx_1]
+        out[2 * di_1 + 1][2 * dj_1 + 1] = utils.colorize(out[2 * di_1 + 1][2 * dj_1 + 1], 'cyan')
+        
+        di_2, dj_2 = self.locs[dest_idx_2]
+        out[2 * di_2 + 1][2 * dj_2 + 1] = utils.colorize(out[2 * di_2 + 1][2 * dj_2 + 1], 'magenta')
 
         #passengers not in taxi
         if pass_idx_1 < len(self.locs) and pass_idx_2 < len(self.locs):
             out[2 * taxi_row + 1][2 * taxi_col + 1] = utils.colorize(
             out[2 * taxi_row + 1][2 * taxi_col + 1], 'green', highlight=True)
             
-            
-            if pass_idx_1 != dest_idx_1 and pass_idx_2 != dest_idx_2:
-                    pi_1, pj_1 = self.locs[pass_idx_1]
-                    out[2 * pi_1 + 1][2 * pj_1 + 1] = utils.colorize(out[2 * pi_1 + 1][2 * pj_1 + 1], 'cyan', bold=True)
-                    
-                    pi_2, pj_2  = self.locs[pass_idx_2]
-                    out[2 * pi_2 + 1][2 * pj_2 + 1] = utils.colorize(out[2 * pi_2 + 1][2 * pj_2 + 1], 'magenta', bold=True)
-                    
-                    
-                    di_1, dj_1 = self.locs[dest_idx_1]
-                    out[2 * di_1 + 1][2 * dj_1 + 1] = utils.colorize(out[2 * di_1 + 1][2 * dj_1 + 1], 'cyan')
-                
-                    di_2, dj_2 = self.locs[dest_idx_2]
-                    out[2 * di_2 + 1][2 * dj_2 + 1] = utils.colorize(out[2 * di_2 + 1][2 * dj_2 + 1], 'magenta')
-            
-            
-            
-            
-            #passenger 1 at destination and passenger 2 at origin
-            elif pass_idx_1 == dest_idx_1 and pass_idx_2 != dest_idx_2:
-                    pi_1, pj_1 = self.locs[pass_idx_1]
-                    out[2 * pi_1 + 1][2 * pj_1 + 1] = utils.colorize(out[2 * pi_1 + 1][2 * pj_1 + 1], 'white', bold=True)
-                    
-                    pi_2, pj_2  = self.locs[pass_idx_2]
-                    out[2 * pi_2 + 1][2 * pj_2 + 1] = utils.colorize(out[2 * pi_2 + 1][2 * pj_2 + 1], 'magenta', bold=True)
-                    
-                    
-                    di_1, dj_1 = self.locs[dest_idx_1]
-                    out[2 * di_1 + 1][2 * dj_1 + 1] = utils.colorize(out[2 * di_1 + 1][2 * dj_1 + 1], 'white')
-                    
-                    di_2, dj_2 = self.locs[dest_idx_2]
-                    out[2 * di_2 + 1][2 * dj_2 + 1] = utils.colorize(out[2 * di_2 + 1][2 * dj_2 + 1], 'magenta')
-
-            #passenger 1 at origin and passenger 2 at destination
-            elif pass_idx_1 != dest_idx_1 and pass_idx_2 == dest_idx_2:  
-                    pi_1, pj_1 = self.locs[pass_idx_1]
-                    out[2 * pi_1 + 1][2 * pj_1 + 1] = utils.colorize(out[2 * pi_1 + 1][2 * pj_1 + 1], 'cyan', bold=True)
-                    
-                    pi_2, pj_2  = self.locs[pass_idx_2]
-                    out[2 * pi_2 + 1][2 * pj_2 + 1] = utils.colorize(out[2 * pi_2 + 1][2 * pj_2 + 1], 'white', bold=True)
-                    
-                    di_1, dj_1 = self.locs[dest_idx_1]
-                    out[2 * di_1 + 1][2 * dj_1 + 1] = utils.colorize(out[2 * di_1 + 1][2 * dj_1 + 1], 'cyan')
-                
-                    di_2, dj_2 = self.locs[dest_idx_2]
-                    out[2 * di_2 + 1][2 * dj_2 + 1] = utils.colorize(out[2 * di_2 + 1][2 * dj_2 + 1], 'white')
-                    
-                
-            elif pass_idx_1 == dest_idx_1 and pass_idx_2 == dest_idx_2:  
-                    pi_1, pj_1 = self.locs[pass_idx_1]
-                    out[2 * pi_1 + 1][2 * pj_1 + 1] = utils.colorize(out[2 * pi_1 + 1][2 * pj_1 + 1], 'white', bold=True)
-                    
-                    pi_2, pj_2  = self.locs[pass_idx_2]
-                    out[2 * pi_2 + 1][2 * pj_2 + 1] = utils.colorize(out[2 * pi_2 + 1][2 * pj_2 + 1], 'white', bold=True)
-                    
-                    di_1, dj_1 = self.locs[dest_idx_1]
-                    out[2 * di_1 + 1][2 * dj_1 + 1] = utils.colorize(out[2 * di_1 + 1][2 * dj_1 + 1], 'white')
-                
-                    di_2, dj_2 = self.locs[dest_idx_2]
-                    out[2 * di_2 + 1][2 * dj_2 + 1] = utils.colorize(out[2 * di_2 + 1][2 * dj_2 + 1], 'white')
            
-        #passenger 1 in taxi
-        elif pass_idx_1 == len(self.locs):
-           out[2 * taxi_row + 1][2 * taxi_col + 1] = utils.colorize(
-           out[2 * taxi_row + 1][2 * taxi_col + 1], 'cyan', highlight=True)
-           
-           pi_1, pj_1 = self.locs[pass_idx_1]
-           out[2 * pi_1 + 1][2 * pj_1 + 1] = utils.colorize(out[2 * pi_1 + 1][2 * pj_1 + 1], 'white', bold=True)
-           
-           di_1, dj_1 = self.locs[dest_idx_1]
-           out[2 * di_1 + 1][2 * dj_1 + 1] = utils.colorize(out[2 * di_1 + 1][2 * dj_1 + 1], 'cyan')
-           
-           
-           #passenger 2 not in destination
-           if pass_idx_2 != dest_idx_2:
-                pi_2, pj_2  = self.locs[pass_idx_2]
-                out[2 * pi_2 + 1][2 * pj_2 + 1] = utils.colorize(out[2 * pi_2 + 1][2 * pj_2 + 1], 'magenta', bold=True)
-
-
-                di_2, dj_2 = self.locs[dest_idx_2]
-                out[2 * di_2 + 1][2 * dj_2 + 1] = utils.colorize(out[2 * di_2 + 1][2 * dj_2 + 1], 'magenta')
-                
-           if pass_idx_2 == dest_idx_2:
-                pi_2, pj_2  = self.locs[pass_idx_2]
-                out[2 * pi_2 + 1][2 * pj_2 + 1] = utils.colorize(out[2 * pi_2 + 1][2 * pj_2 + 1], 'white', bold=True)
-
             
-                di_2, dj_2 = self.locs[dest_idx_2]
-                out[2 * di_2 + 1][2 * dj_2 + 1] = utils.colorize(out[2 * di_2 + 1][2 * dj_2 + 1], 'white')
-                
-                
             
+        #passenger 2 in taxi and passenger 1 not in taxi
+        elif pass_idx_1 == len(self.locs) and pass_idx_2 < len(self.locs):
+            out[2 * taxi_row + 1][2 * taxi_col + 1] = utils.colorize(
+            out[2 * taxi_row + 1][2 * taxi_col + 1], 'cyan', highlight=True)
+            
+            
+                
    
-        #passenger 2 in taxi
-        elif pass_idx_2 == len(self.locs):
+        #passenger 1 in taxi and passenger 2 not in taxi
+        elif pass_idx_2 == len(self.locs) and pass_idx_1 < len(self.locs):
             out[2 * taxi_row + 1][2 * taxi_col + 1] = utils.colorize(
             out[2 * taxi_row + 1][2 * taxi_col + 1], 'magenta', highlight=True)
-             
-            di_2, dj_2 = self.locs[dest_idx_2]
-            out[2 * di_2 + 1][2 * dj_2 + 1] = utils.colorize(out[2 * di_2 + 1][2 * dj_2 + 1], 'magenta')
-             
-            
-            if pass_idx_1 != dest_idx_1:
-                pi_1, pj_1 = self.locs[pass_idx_1]
-                out[2 * pi_1 + 1][2 * pj_1 + 1] = utils.colorize(out[2 * pi_1 + 1][2 * pj_1 + 1], 'cyan', bold=True)
-
-                di_1, dj_1 = self.locs[dest_idx_1]
-                out[2 * di_1 + 1][2 * dj_1 + 1] = utils.colorize(out[2 * di_1 + 1][2 * dj_1 + 1], 'cyan')
-            
-            if pass_idx_1 == dest_idx_1:
-                pi_1, pj_1 = self.locs[pass_idx_1]
-                out[2 * pi_1 + 1][2 * pj_1 + 1] = utils.colorize(out[2 * pi_1 + 1][2 * pj_1 + 1], 'white', bold=True)
-
-                di_1, dj_1 = self.locs[dest_idx_1]
-                out[2 * di_1 + 1][2 * dj_1 + 1] = utils.colorize(out[2 * di_1 + 1][2 * dj_1 + 1], 'white')
-
-        
-        #passenger 1 AND 2 in taxi
-        elif pass_idx_2 == len(self.locs):
-           out[2 * taxi_row + 1][2 * taxi_col + 1] = utils.colorize(
-           out[2 * taxi_row + 1][2 * taxi_col + 1], 'tab:orange', highlight=True)
-           
-           pi_1, pj_1 = self.locs[pass_idx_1]
-           out[2 * pi_1 + 1][2 * pj_1 + 1] = utils.colorize(out[2 * pi_1 + 1][2 * pj_1 + 1], 'white', bold=True)
-        
-           di_1, dj_1 = self.locs[dest_idx_1]
-           out[2 * di_1 + 1][2 * dj_1 + 1] = utils.colorize(out[2 * di_1 + 1][2 * dj_1 + 1], 'cyan')
-           
-           pi_2, pj_2  = self.locs[pass_idx_2]
-           out[2 * pi_2 + 1][2 * pj_2 + 1] = utils.colorize(out[2 * pi_2 + 1][2 * pj_2 + 1], 'white', bold=True)
-
-           di_2, dj_2 = self.locs[dest_idx_2]
-           out[2 * di_2 + 1][2 * dj_2 + 1] = utils.colorize(out[2 * di_2 + 1][2 * dj_2 + 1], 'magenta')
                 
 
         outfile.write("\n".join(["".join(row) for row in out]) + "\n")
