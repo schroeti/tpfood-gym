@@ -433,7 +433,7 @@ class Delivery(DiscreteEnv):
            out[2 * di_2 + 1][2 * dj_2 + 1] = utils.colorize(out[2 * di_2 + 1][2 * dj_2 + 1], 'magenta')
                 
 
-            outfile.write("\n".join(["".join(row) for row in out]) + "\n")
+        outfile.write("\n".join(["".join(row) for row in out]) + "\n")
         if self.lastaction is not None:
             outfile.write("  ({})\n".format(["South", "North", "East", "West", "Pickup1", "Dropoff1", "Pickup2", "Dropoff2"][self.lastaction]))
         else: outfile.write("\n")
