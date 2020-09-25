@@ -341,6 +341,20 @@ class Delivery(DiscreteEnv):
             
                 di_2, dj_2 = self.locs[dest_idx_2]
                 out[2 * di_2 + 1][2 * dj_2 + 1] = utils.colorize(out[2 * di_2 + 1][2 * dj_2 + 1], 'white')
+                
+             elif pass_idx_1 == dest_idx_1 and pass_idx_2 == dest_idx_2:  
+                pi_1, pj_1 = self.locs[pass_idx_1]
+                out[2 * pi_1 + 1][2 * pj_1 + 1] = utils.colorize(out[2 * pi_1 + 1][2 * pj_1 + 1], 'white', bold=True)
+                
+                pi_2, pj_2  = self.locs[pass_idx_2]
+                out[2 * pi_2 + 1][2 * pj_2 + 1] = utils.colorize(out[2 * pi_2 + 1][2 * pj_2 + 1], 'white', bold=True)
+                
+                di_1, dj_1 = self.locs[dest_idx_1]
+                out[2 * di_1 + 1][2 * dj_1 + 1] = utils.colorize(out[2 * di_1 + 1][2 * dj_1 + 1], 'white')
+            
+                di_2, dj_2 = self.locs[dest_idx_2]
+                out[2 * di_2 + 1][2 * dj_2 + 1] = utils.colorize(out[2 * di_2 + 1][2 * dj_2 + 1], 'white')
+           
            
         #passenger 1 in taxi
         elif pass_idx_1 == len(self.locs):
