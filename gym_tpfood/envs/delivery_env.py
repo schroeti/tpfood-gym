@@ -327,7 +327,7 @@ class Delivery(DiscreteEnv):
         #passenger 1 AND 2 in taxi
         elif pass_idx_2 == len(self.locs):
            out[2 * taxi_row + 1][2 * taxi_col + 1] = utils.colorize(
-           out[2 * taxi_row + 1][2 * taxi_col + 1], 'tab:orange', highlight=True)
+           out[2 * taxi_row + 1][2 * taxi_col + 1], 'gray', highlight=True)
 
 
         di_1, dj_1 = self.locs[dest_idx_1]
