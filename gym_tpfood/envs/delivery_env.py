@@ -400,17 +400,17 @@ class Delivery(DiscreteEnv):
             out[2 * di_2 + 1][2 * dj_2 + 1] = utils.colorize(out[2 * di_2 + 1][2 * dj_2 + 1], 'magenta')
              
             
-          if pass_idx_1 != dest_idx_1:
+            if pass_idx_1 != dest_idx_1:
                 pi_1, pj_1 = self.locs[pass_idx_1]
                 out[2 * pi_1 + 1][2 * pj_1 + 1] = utils.colorize(out[2 * pi_1 + 1][2 * pj_1 + 1], 'cyan', bold=True)
-                
+
                 di_1, dj_1 = self.locs[dest_idx_1]
                 out[2 * di_1 + 1][2 * dj_1 + 1] = utils.colorize(out[2 * di_1 + 1][2 * dj_1 + 1], 'cyan')
             
-          if pass_idx_1 == dest_idx_1:
+            if pass_idx_1 == dest_idx_1:
                 pi_1, pj_1 = self.locs[pass_idx_1]
                 out[2 * pi_1 + 1][2 * pj_1 + 1] = utils.colorize(out[2 * pi_1 + 1][2 * pj_1 + 1], 'white', bold=True)
-                
+
                 di_1, dj_1 = self.locs[dest_idx_1]
                 out[2 * di_1 + 1][2 * dj_1 + 1] = utils.colorize(out[2 * di_1 + 1][2 * dj_1 + 1], 'white')
 
