@@ -292,11 +292,11 @@ class Delivery(DiscreteEnv):
         
         #passengers not in taxi
         
-        pi_1, pj_1 = self.locs[pass_idx_1]
-        out[2 * pi_1 + 1][2 * pj_1 + 1] = utils.colorize(out[2 * pi_1 + 1][2 * pj_1 + 1], 'cyan', bold=True)
+        #pi_1, pj_1 = self.locs[pass_idx_1]
+        #out[2 * pi_1 + 1][2 * pj_1 + 1] = utils.colorize(out[2 * pi_1 + 1][2 * pj_1 + 1], 'cyan', bold=True)
 
-        pi_2, pj_2  = self.locs[pass_idx_2]
-        out[2 * pi_2 + 1][2 * pj_2 + 1] = utils.colorize(out[2 * pi_2 + 1][2 * pj_2 + 1], 'magenta', bold=True)
+        #pi_2, pj_2  = self.locs[pass_idx_2]
+        #out[2 * pi_2 + 1][2 * pj_2 + 1] = utils.colorize(out[2 * pi_2 + 1][2 * pj_2 + 1], 'magenta', bold=True)
         
         if pass_idx_1 < len(self.locs) and pass_idx_2 < len(self.locs):
             out[2 * taxi_row + 1][2 * taxi_col + 1] = utils.colorize(
