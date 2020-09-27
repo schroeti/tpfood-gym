@@ -38,7 +38,7 @@ $ sudo pip install --upgrade pip
 ```
 2. Install gym
 ```
-pip install gym
+$ pip install gym
 ```
 3. Install gym_tpfood
 ```
@@ -74,8 +74,21 @@ Simply run:
 ## Instruction for installation of agents on Mac OS X
 The main library used for agents is [Stable Baselines](https://stable-baselines.readthedocs.io/en/master/guide/install.html).
 
-Installation of system packages on Mac requires Homebrew. With Homebrew installed, run the following:
+Installation of system packages on Mac requires Homebrew. With Homebrew installed, open the terminal and run the following:
 ```
 brew install cmake openmpi
 pip install stable-baselines[mpi]
+```
+
+## Instruction for installation of Optuna on Mac OS X
+If you are using a simple Python IDE, run the following
+Installation of system packages on Mac requires Homebrew. With Homebrew installed, open the terminal and run the following:
+```
+pip install optuna
+```
+If you are using Anaconda, you can also install it directly in the terminal with:
+
+```
+conda install -c conda-forge optuna
+
 ```
