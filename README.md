@@ -42,21 +42,21 @@ $ pip install gym
 ```
 3. Install gym_tpfood
 ```
-git clone https://github.com/schroeti/tpfood-gym.git
+$ git clone https://github.com/schroeti/tpfood-gym.git
 ```
 4. Locate the tpfood-gym repository on your computer. ls and cd are both shell commands that will be useful. 
 ```
-ls
-cd
+$ ls
+$ cd
 ```
 5. Once you have found the tpfood-gym repository, enter it by using cd. 
 6. Type the following command
 ```
-python setup.py develop
+$ python setup.py develop
 ```
 7. You can check that the gym_tpfood library was correctly installed by typing
 ```
-python
+$ python
 import gym_tpfood
 ```
 If Python does not throw an error, this means that the library has been correctly installed. 
@@ -76,19 +76,19 @@ The main library used for agents is [Stable Baselines](https://stable-baselines.
 
 Installation of system packages on Mac requires Homebrew. With Homebrew installed, open the terminal and run the following:
 ```
-brew install cmake openmpi
-pip install stable-baselines[mpi]
+$ brew install cmake openmpi
+$ pip install stable-baselines[mpi]
 ```
 
 ## Instruction for installation of Optuna on Mac OS X
 If you are using a simple Python IDE, run the following
 Installation of system packages on Mac requires Homebrew. With Homebrew installed, open the terminal and run the following:
 ```
-pip install optuna
+$ pip install optuna
 ```
 If you are using Anaconda, you can also install it directly in the terminal with:
 
 ```
-conda install -c conda-forge optuna
+$ conda install -c conda-forge optuna
 
 ```
