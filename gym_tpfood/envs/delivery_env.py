@@ -291,20 +291,14 @@ class Delivery(DiscreteEnv):
         def ul(x): return "_" if x == " " else x       
         
         #passengers not in taxi
-        if pass_idx_1 < len(self.locs) and pass_idx_1 != dest_idx_1:
+        if pass_idx_1 < len(self.locs) and pass_idx_2 < len(self.locs):
             out[2 * taxi_row + 1][2 * taxi_col + 1] = utils.colorize(
             out[2 * taxi_row + 1][2 * taxi_col + 1], 'green', highlight=True)
-    
 
-        
-        elif pass_idx_2 < len(self.locs) and pass_idx_2 != dest_idx_2:
-            out[2 * taxi_row + 1][2 * taxi_col + 1] = utils.colorize(
-            out[2 * taxi_row + 1][2 * taxi_col + 1], 'green', highlight=True)
-    
-  
+
            
         #passenger 1 in taxi and passenger 2 not at destination
-        elif pass_idx_1 == len(self.locs):
+        elif pass_idx_1 == len(self.locs) and pass_idx_1 != dest_idx_1:
             out[2 * taxi_row + 1][2 * taxi_col + 1] = utils.colorize(
             out[2 * taxi_row + 1][2 * taxi_col + 1], 'cyan', highlight=True)
             
@@ -317,7 +311,7 @@ class Delivery(DiscreteEnv):
        
    
         #passenger 2 in taxi and passenger 1 not at destination
-        elif pass_idx_2 == len(self.locs):
+        elif pass_idx_2 == len(self.locs) pass_idx_2 != dest_idx_2:
             out[2 * taxi_row + 1][2 * taxi_col + 1] = utils.colorize(
             out[2 * taxi_row + 1][2 * taxi_col + 1], 'magenta', highlight=True)
             
@@ -329,9 +323,9 @@ class Delivery(DiscreteEnv):
         
         
         #passenger 1 AND 2 in taxi
-        elif pass_idx_1 == len(self.locs) and pass_idx_2 == len(self.locs):
-            out[2 * taxi_row + 1][2 * taxi_col + 1] = utils.colorize(
-            out[2 * taxi_row + 1][2 * taxi_col + 1], 'white', highlight=True)
+        #elif pass_idx_1 == len(self.locs) and pass_idx_2 == len(self.locs):
+            #out[2 * taxi_row + 1][2 * taxi_col + 1] = utils.colorize(
+            #out[2 * taxi_row + 1][2 * taxi_col + 1], 'white', highlight=True)
      
         
                 
