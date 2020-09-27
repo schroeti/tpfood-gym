@@ -295,22 +295,21 @@ class Delivery(DiscreteEnv):
             out[2 * taxi_row + 1][2 * taxi_col + 1] = utils.colorize(
             out[2 * taxi_row + 1][2 * taxi_col + 1], 'green', highlight=True)
     
-            pi_1, pj_1 = self.locs[pass_idx_1]
-            out[2 * pi_1 + 1][2 * pj_1 + 1] = utils.colorize(out[2 * pi_1 + 1][2 * pj_1 + 1], 'cyan', bold=True)
+
         
         elif pass_idx_2 < len(self.locs) and pass_idx_2 != dest_idx_2:
             out[2 * taxi_row + 1][2 * taxi_col + 1] = utils.colorize(
             out[2 * taxi_row + 1][2 * taxi_col + 1], 'green', highlight=True)
     
-            pi_2, pj_2  = self.locs[pass_idx_2]
-            out[2 * pi_2 + 1][2 * pj_2 + 1] = utils.colorize(out[2 * pi_2 + 1][2 * pj_2 + 1], 'magenta', bold=True)
-            
-              
+  
            
         #passenger 1 in taxi and passenger 2 not at destination
         elif pass_idx_1 == len(self.locs):
             out[2 * taxi_row + 1][2 * taxi_col + 1] = utils.colorize(
             out[2 * taxi_row + 1][2 * taxi_col + 1], 'cyan', highlight=True)
+            
+            pi_1, pj_1 = self.locs[pass_idx_1]
+            out[2 * pi_1 + 1][2 * pj_1 + 1] = utils.colorize(out[2 * pi_1 + 1][2 * pj_1 + 1], 'cyan', bold=True)
             
             di_1, dj_1 = self.locs[dest_idx_1]
             out[2 * di_1 + 1][2 * dj_1 + 1] = utils.colorize(out[2 * di_1 + 1][2 * dj_1 + 1], 'cyan')
@@ -322,7 +321,9 @@ class Delivery(DiscreteEnv):
             out[2 * taxi_row + 1][2 * taxi_col + 1] = utils.colorize(
             out[2 * taxi_row + 1][2 * taxi_col + 1], 'magenta', highlight=True)
             
-  
+            pi_2, pj_2  = self.locs[pass_idx_2]
+            out[2 * pi_2 + 1][2 * pj_2 + 1] = utils.colorize(out[2 * pi_2 + 1][2 * pj_2 + 1], 'magenta', bold=True)
+            
             di_2, dj_2 = self.locs[dest_idx_2]
             out[2 * di_2 + 1][2 * dj_2 + 1] = utils.colorize(out[2 * di_2 + 1][2 * dj_2 + 1], 'magenta')
         
