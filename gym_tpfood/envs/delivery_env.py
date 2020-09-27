@@ -311,7 +311,7 @@ class Delivery(DiscreteEnv):
        
    
         #passenger 2 in taxi and passenger 1 not at destination
-        elif pass_idx_2 == len(self.locs) pass_idx_2 != dest_idx_2:
+        elif pass_idx_2 == len(self.locs) and pass_idx_2 != dest_idx_2:
             out[2 * taxi_row + 1][2 * taxi_col + 1] = utils.colorize(
             out[2 * taxi_row + 1][2 * taxi_col + 1], 'magenta', highlight=True)
             
