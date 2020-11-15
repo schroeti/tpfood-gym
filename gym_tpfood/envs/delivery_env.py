@@ -89,54 +89,61 @@ MAP = [
 
 class Delivery(DiscreteEnv):
     """
-    The Taxi Problem
-    from "Hierarchical Reinforcement Learning with the MAXQ Value Function Decomposition"
-    by Tom Dietterich
+    The Multi-parcel/Multi-passenger delivery Problem
 
     Description:
-    There are four designated locations in the grid world indicated by R(ed), G(reen), Y(ellow), and B(lue). When the episode starts, the taxi starts off at a random square and the passenger is at a random location. The taxi drives to the passenger's location, picks up the passenger, drives to the passenger's destination (another one of the four specified locations), and then drops off the passenger. Once the passenger is dropped off, the episode ends.
+    There are five designated locations in the grid world indicated by A, B, C, D and E. When the episode starts, the taxi/delivery man starts off at a random square and the passengers/parcels are at a random locations.
+    The taxi drives to the passengers's location, picks up the passenger, drives to the passenger's destination (another one of the five specified locations), and then drops off the passenger. 
+    Once both passengers/parcels have been dropped off, the episode ends.
 
     Observations: 
-    There are 500 discrete states since there are 25 taxi positions, 5 possible locations of the passenger (including the case when the passenger is in the taxi), and 4 destination locations. 
+    There are 22500 discrete states since there are 25 taxi positions, 6 possible locations of the passenger 1 (including the case when the passenger is in the taxi),
+    6 possible locations of the passenger 2 and 5 destination locations for passenger 1 and 5 destination locations for passenger 2. 
     
     Passenger locations:
-    - 0: R(ed)
-    - 1: G(reen)
-    - 2: Y(ellow)
-    - 3: B(lue)
-    - 4: in taxi
-    - 5: Z
+    - 0: A
+    - 1: B
+    - 2: C
+    - 3: D
+    - 4: E
+    - 5: in taxi
     
     Destinations:
-    - 0: R(ed)
-    - 1: G(reen)
-    - 2: Y(ellow)
-    - 3: B(lue)
-    - 4: Z
+    - 0: A
+    - 1: B
+    - 2: C
+    - 3: D
+    - 4: E
         
     Actions:
-    There are 6 discrete deterministic actions:
+    There are 8 discrete deterministic actions:
     - 0: move south
     - 1: move north
     - 2: move east 
     - 3: move west 
-    - 4: pickup passenger
-    - 5: dropoff passenger
+    - 4: pickup passenger 1
+    - 5: dropoff passenger 1
+    - 6: pickup passenger 2
+    - 7: dropoff passenger 2
     
     Rewards: 
-    There is a reward of -1 for each action and an additional reward of +20 for delivering the passenger. There is a reward of -10 for executing actions "pickup" and "dropoff" illegally.
+    There is a reward of -1 for each action and an additional reward of +20 for delivering each passenger. There is a reward of -10 for executing actions "pickup" and "dropoff" illegally.
     
 
     Rendering:
-    - blue: passenger
-    - magenta: destination
-    - yellow: empty taxi
-    - green: full taxi
-    - other letters (R, G, Y, B and Z): locations for passengers and destinations
+    - cyan (bold): passenger 1 location
+    - magenta (bold): passenger 2 location
+    - cyan: passenger 1 destination
+    - magenta: passenger 2 destination
+    - cyan (taxi): passenger 1 in taxi
+    - magenta (taxi): passenger 2 in taxi 
+    - green (taxi): empty taxi
+
+    - other letters (A, B, C, D, E): locations for passengers and destinations
     
 
     state space is represented by:
-        (taxi_row, taxi_col, passenger_location, destination)
+        (taxi_row, taxi_col, passenger_location_1, passenger_destination_1, passenger_location_2, passenger_destination_2)
     """
     metadata = {'render.modes': ['human', 'ansi']}
 
@@ -173,8 +180,6 @@ class Delivery(DiscreteEnv):
                                     new_row, new_col, new_pass_idx_1, new_pass_idx_2 = row, col, pass_idx_1, pass_idx_2
                                     reward = -1 # default reward when there is no pickup/dropoff
                                     done = False
-                                    # done1 = False
-                                    # done2 = False
                                     taxi_loc = (row, col)
         
                                     if action == 0 and self.desc[2 * row + 2, 2 * col + 1] == b":" :
@@ -193,9 +198,6 @@ class Delivery(DiscreteEnv):
                                     #passenger not in taxi, taxi in loc passenger, passenger not in destination
                                         if pass_idx_1 < len(locs) and taxi_loc == locs[pass_idx_1] and pass_idx_1 != dest_idx_1:
                                             new_pass_idx_1 = len(locs)
-                                    #passenger not in taxi, taxi in loc passenger, passenger ALREADY IN destination
-                                        # elif pass_idx_1 < len(locs) and taxi_loc == locs[pass_idx_1] and pass_idx_1 == dest_idx_1:
-                                        #     reward = -100
                                         else: # taxi is not at the passenger location or passenger already in taxi
                                             reward = -10
                                             
@@ -203,9 +205,6 @@ class Delivery(DiscreteEnv):
                                         if taxi_loc == locs[dest_idx_1] and pass_idx_1 == len(locs):
                                             new_pass_idx_1 = dest_idx_1
                                             reward = 20
-                                            # done1 = True
-                                            #if pass_idx_2 == dest_idx_2 :
-                                                #done = True
                                         # dropoff at wrong location
                                         elif (taxi_loc in locs) and pass_idx_1 == len(locs):
                                             new_pass_idx_1 = locs.index(taxi_loc)
@@ -215,8 +214,6 @@ class Delivery(DiscreteEnv):
                                     elif action == 6:  # pickup PASSENGER 2
                                         if pass_idx_2 < len(locs) and taxi_loc == locs[pass_idx_2] and pass_idx_2 != dest_idx_2:
                                             new_pass_idx_2 = len(locs)
-                                        # elif pass_idx_2 < len(locs) and taxi_loc == locs[pass_idx_2] and pass_idx_2 == dest_idx_2:
-                                        #     reward = -100
                                         else: # taxi is not at the passenger location
                                             reward = -10
                                             
@@ -225,21 +222,16 @@ class Delivery(DiscreteEnv):
                                         if taxi_loc == locs[dest_idx_2] and pass_idx_2 == len(locs):
                                             new_pass_idx_2 = dest_idx_2
                                             reward = 20
-                                            # done2 = True
-                                            #if pass_idx_1 == dest_idx_1:
-                                                #done = True
                                         # dropoff at wrong location
                                         elif (taxi_loc in locs) and pass_idx_2 == len(locs):
                                             new_pass_idx_2 = locs.index(taxi_loc)
                                         # non-legal dropoff because passenger not in taxi 
                                         else: 
                                             reward = -10
-                                            
-                     
+                          
                                     if new_pass_idx_1 == dest_idx_1 and new_pass_idx_2 == dest_idx_2:
                                         done = True
-                                    # if done1 == True and done2 == True:
-                                        
+                                    
                                     new_state = self.encode(
                                         new_row, new_col, new_pass_idx_1, new_pass_idx_2, dest_idx_1, dest_idx_2)
                                     P[state][action].append(
@@ -339,10 +331,6 @@ class Delivery(DiscreteEnv):
         
         di_2, dj_2 = self.locs[dest_idx_2]
         out[2 * di_2 + 1][2 * dj_2 + 1] = utils.colorize(out[2 * di_2 + 1][2 * dj_2 + 1], 'magenta')
-
-     
-        
-                
 
         outfile.write("\n".join(["".join(row) for row in out]) + "\n")
         if self.lastaction is not None:
