@@ -14,6 +14,8 @@ The repository is built as follows:
 ```
 tpfood_gym/
   README.md
+  agents
+  videos
   setup.py
   gym_tpfood/
     __init__.py
