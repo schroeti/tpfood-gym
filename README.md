@@ -23,7 +23,9 @@ tpfood_gym/
       __init__.py
       delivery_env.py
 ```
-
+- the agents folder contains 3 different agent scripts; Q-learning, Double Deep Q Network with Prioritized Experience Replay and an Actor-Critic model. 
+- the videos folder contains 4 videos for special cases where Ride-Sharing is possible; 1 of the Q-learning and 3 of the AC model. 
+- the gym_tpfood folder all the necessary scripts for creating the environment. 
 ## Instructions for installation of environment
 If you want to use the ```delivery_env.py```environment, here is how you should proceed. 
 
