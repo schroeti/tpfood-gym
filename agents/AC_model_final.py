@@ -88,7 +88,7 @@ SavedAction = namedtuple('SavedAction', ['log_prob', 'value'])
 os.chdir(os.getcwd()+'/Desktop/RL/Plots_thesis/Q-learning')
 
 # =============================================================================
-# 1. Actor Critic 
+# 1. Actor-Critic 
 # =============================================================================
 class AC_model(nn.Module):
     def __init__(self, architecture):
